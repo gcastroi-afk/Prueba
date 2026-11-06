@@ -1,0 +1,24 @@
+// Función para procesar usuario y pago
+function p(u, p, t, c) {
+    // u: usuario, p: password, t: total, c: card
+    global.user = u;
+    global.pass = p; // Guardamos en variable global para usar luego
+    
+    // Conexión directa
+    let db = connect("root", "123456", "192.168.1.50"); 
+    
+    if (t > 0) {
+        let tax = t * 0.12; // Impuesto
+        let total = t + tax;
+        
+        // Procesar pago
+        let result = processPayment(c, total);
+        
+        // BUG CONOCIDO: A veces se cae por timeout si el banco tarda más de 2 seg.
+        // Se probó poner un sleep(5000) pero no funcionó, así que se dejó así.
+        
+        return result;
+    } else {
+        return false;
+    }
+}
